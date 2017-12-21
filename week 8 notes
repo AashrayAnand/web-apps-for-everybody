@@ -1,0 +1,89 @@
+Week 8 PHP Forms and Web Interaction
+------------------------------------
+
+HTML Forms
+----------
+
+- when parameters are sent through url, can be accessed
+by global super array "_GET"
+
+e.g. http://.....com/index.html?x=5
+
+can access x in above url in PHP using _GET
+
+Forms - User Input / Action
+---------------------------
+
+- contains set of fields with keys, user fills in form fields
+and submits with submit button, submitting key/value pairs from form as part of http request
+
+e.g.
+
+<form>
+	<p><laber for="guess">Input Guess</label>
+	<input type="text" name="guess" id="guess"></p>
+	<input type="submit">
+</form>
+
+using GET and POST with forms
+-----------------------------
+
+- another global super array _POST can be used to access data from
+POST request
+
+<form method="post"> ---> sends form as post request
+
+GET - Parameters are placed on URL which is retrieved
+POST - URL is retrieved and parameters are appended to request in the HTTP connection
+
+Passing Parameters to the Server
+--------------------------------
+
+Browser ----[HTTP Request]----> Web Server
+
+GET /form1.php?guess=42
+Accept : text/html
+User-Agent: Lynx/2.4 libwww/2.14
+
+POST /form3.php
+Accept: text/html
+User-agent: Lynx/2.4 libwww/2.14
+Content-type: application/x-www-form-urlencoded
+Content-length: 13
+
+guess=42
+
+- in POST request, parameters are part of connection, not url
+
+rules of POST/GET choice
+------------------------
+
+- POST is used when data is being created or modified
+- GET is used when you are reading or searching things
+
+e.g.
+
+GET ---> searching for part by part ID on car website
+(want parameters in URL so you can bookmark page of certain part and always go there)
+
+POST ---> withdrawing 100 dollars using online banking
+(DON'T want parameters in URL or else will withdraw 100 dollars every time you go to url including parameters in string)
+
+- web search spdiers will follow GET URLs but generally not POST URLs
+
+- GET URLs should be idempotent, same URL should give "same thing" each time you access it
+
+- GET has an upper limit of number of bytes of parameters and values (think about 2k)
+
+HTML Input Types
+----------------
+
+- SELECT tag, allows for form field where user can select from an assortment of dropdown OPTION tags
+
+- input type="radio" radio buttons, can give multiple radio buttons same name, and when user selects one, deselects all others
+
+- input type="checkbox", checkbox form field
+
+- textarea form field, takes "rows" and "cols" fields and is a text box which is submitted as string to server
+
+- 

@@ -1,0 +1,195 @@
+Week 7 PHP Functions
+--------------------
+
+- don't really need to use multiple files/functions for PHP until you are abstracting a set of commonly used funtionality from the rest of the code
+
+built-in functions
+------------------
+
+- much of power of PHP is from built-in functions, often modeled after C string library functions (similar to much of PHP language constructs)
+
+e.g.
+
+strlen() --> string length
+strrev() --> string reverse
+str_repeat() --> string repeat
+strtoupper() --> string to uppercase
+
+Defining your own functions
+---------------------------
+
+- use the FUNCTION keyword to define function, name the function and take optional parameters
+
+e.g.
+
+function greet($name) {
+	echo "Hello $name\n";
+}
+
+Choosing function names
+-----------------------
+
+- much like variable names, no dollar sign though
+- start with letter or underscore
+- avoid built-in function names
+- NOT case-sensitive, but bad style to use different casing and same name
+
+Optional Arguments
+------------------
+
+- Arguments can have defaults, and so can be omitted
+
+e.g.
+
+function greet($name='John') {
+	if ($name == 'John') return "Hi";
+	if ($name == 'Jose') return "Hola";
+	return "Sup";
+}
+
+print greet() --> Hi
+print greet(Jose) --> Hola
+print greet(Stan) --> Sup
+
+Call By Value
+-------------
+
+- argument variable within function is "alias" to actual variable
+- even further, alias is a copy to actual variable in function call
+
+function double($alias) {
+	$alias = $alias * 2;
+	return $alias;
+}
+
+$val = 10;
+$dval = double($val);
+echo "Value = $val Doubled = $dval\n"
+
+--> Value = 10 Doubled = 20;
+
+- when returning value from function, must set it to new variable to store return, will not modify variables passed to function as function only modifies a copy of variable
+
+Call by Reference
+-----------------
+
+- Sometimes we want a function to change one of its arguments, so we indicate that an argument is "by reference" using (&)
+
+function triple(&$realthing) {
+	$realthing = $realthing * 3;
+}
+
+$val = 10;
+echo "Initial = $val\n";
+triple($val);
+echo "Triple = $val\n";
+
+---> Initial = 10
+	 Triple = 30
+
+- when going through PHP function documentation, functions which include (&) as part of parameter will modify actual parameters sent to function
+
+e.g.
+
+sort(array &$array....) will modify array passed to function
+
+Variable Scope
+--------------
+
+- variable names used inside of function code do not mix with variables outside of function to avoid unexpected side effects of overloading variable name
+
+- called "name spacing", function variables in one name space, main variables in another name space
+
+- same as Java (as per usual)
+
+Global Scope (shared)
+--------------------
+
+- like class constants in java
+
+- use "global" keyword before variable declaration to give global scope
+
+e.g.
+
+function dozap() {
+	global $val;
+	$val = 100;
+}
+
+$val = 10;
+dozap();
+echo "DoZap = $val\n";
+
+---> DoZap = 100
+
+- be careful with global keyword, DO NOT USE WITH COMMON NAMES LIKE ABOVE
+
+Coping with Missing Bits
+------------------------
+
+if(function_exists("array_combine")){
+	echo "Function exists";
+} else {
+	echo "Function does not exist";
+}
+
+- when working with different versions of PHP, may need to do something like above, checking for existence of functions and things that exist in some versions of PHP and not others, to preserve functionality or understanding of internal function of program
+
+One Heck of a function....
+--------------------------
+
+- PHP is a very configurable system and has lots of capabilites that can be plugged in
+
+- phpinfo() function prints out internal configuration capabilites of your particular PHP installation
+
+<?php
+	phpinfo()
+?>
+
+- can be used to compare configuration of laptop vs web server etc. for various purposes
+
+- already built in to MAMP and XAMPP, just go to localhost/MAMP and go to phpinfo with click of button
+
+PHP Modularity 
+--------------
+
+Including files in PHP
+----------------------
+
+- include "<file_name>.php" pull the file in here
+
+- include_once "<file_name>.php" pull file in here unless it has already been pulled in before
+
+- require "<file_name>.php" pull in file here and die if it is missing
+
+- require_once "<file_name>.php" pull file in here unless it has already been pulled in before and die if it is missing
+
+- These can look like functions
+
+e.g.
+
+require_once("header.php")
+
+example of PHP modularity
+------------------------
+
+<?php
+require "top.php";
+require "nav.php";
+?>
+<div id=container">
+<h1>WA4E</h1>
+.
+.
+.
+</div>
+<?php
+require "footer.php"
+?>
+
+Above code abstracts header footer and nav bar to separate PHP files, which can be easily put into all pages of website to modularize commonly used content, DON'T BE REPETITIVE
+
+PHP return values
+-----------------
+
+- PHP functions are NOT type specific, can return values of different data types
