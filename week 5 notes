@@ -1,0 +1,237 @@
+Week 5 Introduction to PHP
+-------------------------
+
+Purpose
+-------
+
+- while PHP can be used for a bevy of purposes, it is designed as a
+templating language, and is intended to be used for scripting and optimized
+for web applications
+
+Philosophy of PHP
+-----------------
+
+- you are a RESPONSIBLE programmer
+- you know what you want to do
+- some syntax flexibility and styles choices are OK
+- make things as convenient as possible
+- sometimes errors fail silently
+
+- PHP is essentially an EXTENSION of HTML
+
+e.g. PHP program below
+
+<h1> Hello from Aashray's HTML Page </h1>
+<p>
+<?php
+	echo "Hi there.\n";
+	$answer=6*7;
+	echo "The answer is $answer, what ";
+	echo "was the question again?\n";
+?>
+</p>
+<p> another paragraph.</p>
+
+- PHP program essentially can combine raw HTML with the OUTPUT
+of PHP code, by using PHP tag to swtich to PHP language, interpreting the block of code and returning the output into the HTML
+
+PHP Basix Syntax
+----------------
+
+Keywords
+-------
+
+- ALL PHP variables start with a dollar sign ($)
+followed by any number of letters/numbers/underscores
+- variable casing matters
+
+	- $abc = 12;
+	- $total = 0;
+	- $largest_so_far = 0;
+
+- sometimes not using dollar sign will give "silent" error, be dilligent with using dollar signs so you aren't confused by error
+or lack thereof
+
+Strings
+-------
+
+- String literals can use single quotes OR double quotes
+- backslash (\) is used as "escape" characters
+- strings can span multiple lines, newline is part of the string
+- in double quotes strings, variable values are expanded
+- CONCATENATION IS "." NOT "+" !!!!!!!!!!!!!!!!
+
+double-quoted "Smart Strings" in PHP
+------------------------------------
+
+- multi line strings in PHP will automatically add \n character to end of each line, e.g.
+
+echo "You can also have embedded newlines in
+strings this way as it is
+okay to do"
+
+- above string will automatically separate into multiple lines, embedding new line characters
+- can also manually use \n character
+
+- DOUBLE-QUOTES strings will interpret the value of a variable
+when a $ sign is placed in front
+
+e.g.
+
+$answer = 12
+echo "this is the answer: $answer" --> "this is the answer: 12"
+
+Single-quote Strings in PHP
+---------------------------
+
+- multi line strings in single quotes will also automatically add \n characters to end of each line (see example above)
+
+- variables are NOT interpreted in single quotes
+
+e.g.
+
+$answer = 12
+echo 'this is the answer: $answer' ----> 'this is the answer: $answer'
+
+Comments in PHP
+--------------
+
+- all standard comment styles are usable in PHP (#)(//)(/* */)
+
+# This is an acceptable comment
+
+// This is an acceptable comment
+
+/* 
+This is an acceptable comment
+*/
+
+Output
+------
+
+- echo is a language construct, can be treated like a function
+which takes one parameter, without parentheses, it takes MULTIPLE
+parameters
+- print is a function, onle one parameter, but parenthese are optional so it can look like a language construct
+
+e.g.
+
+echo $x or echo($x) or echo $x, "\n" ..........
+
+print $x or print($x) .............
+
+- PHP Philosophy lets you act like you are in many different languages, accepts multiple common conventions and lets you "Do what you want"
+
+PHP Expressions
+---------------
+
+- completely normal like other languages ( + - / *)
+- more aggressive implicit type conversion
+
+e.g.
+
+<?php
+	$x = "15" + 27;
+	echo($x);
+	echo("\n");
+?>
+
+above results to ----> 42
+
+REMEMBER: + in PHP is ONLY addition, not concatenation,
+concaternation is "."
+
+Operators of note
+-----------------
+
+- increment/decrement(++ and --)
+- concatenation (.)
+- equality (== and !=)
+- identity(==== and !==)
+- ternary (? :)
+- side-effect assignment(+= -= .= etc.)
+- Ignore rarely-used bitwise operators (>> << ^ | &)
+
+- general practice: avoid using increment and decrement when possible (which is most cases)
+
+concatenation
+-------------
+
+$a = 'Hello ' . 'World!';
+echo $a . "\n"; 
+
+results in....
+
+Hello World!
+
+Ternary Operator
+----------------
+
+- Comes from C, same as Java ternary operator
+
+$www = 123;
+$msg = $www > 100 ? "Large" : "Small";
+echo "First: $msg \n"; ---> First: Large
+$msg = ($www % 2 == 0) ? "Even" : "Odd";
+echo "Second: $msg \n"; ---> Second: Odd
+$msg = ($www % 2) ? "Odd" : "Even";
+echo "Third: $msg \n"; ---> Third: Odd
+
+when output of Mod operator is 1, results to True, 0 results to false
+so we can express $www % 2 == 0 as simply $www % 2, flipping Odd and Even so Odd is true (1) and Even is false (0)
+
+Side-Effect Assignment
+----------------------
+
+echo "\n";
+$out = "Hello";
+$out = $out
+$out .= "World!";
+$out .= "\n";
+echo $out; -----> Hello World!
+$count = 0;
+$count += 1;
+echo "Count: $count\n"; ----> Count: 1
+
+Casting
+-------
+
+- in PHP, division forces operands to be FLOATING POINT
+- PHP converts expression values silently and aggressively
+
+$a = 56; $b = 12;
+$c = $a / $ b;
+echo "C: $c\n"; ---> C: 4.666666667
+$d = "100" + 36.25 + TRUE;
+echo "D: " . $d . "\n"; ----> D: 137.25 (TRUE evaluates to 1, FALSE to 0)
+echo "D2: " . (string) $d . "\n"; -----> D2: 137.25
+$e = (int) 9.9 - 1;
+echo "E: $e\n"; -----> E: 8
+$f = "sam" + 25;
+echo "F: $f\n"; ----> F: 25
+$g = "sam" . 25;
+echo "G: $g\n"; ----> G: sam25
+
+- adding string and integer (NOT CONCATENATING) will interpret string
+as 0, therefore "sam" + 25 = 25, but "sam" . 25 = sam25
+- this is a good example of how PHP will interpret all expressions effectively
+and avoids blowing up in most scenarios (compared to another language like Python)
+
+echo "A".FALSE."B\n" ---> AB
+echo "X".TRUE."Y\n" ---> X1Y
+
+- echoing FALSE evaluates to NOTHING (""), will show up as empty if echo'd alone
+
+equality versus identity
+------------------------
+
+if( 123 == "123") print ("Equality 1\n");
+if( 123 == "100"+23) print ("Equality 2\n");
+if( FALSE == "0" ) print ("Equality 3\n");
+if( (5 < 6) == "2" - "1") print ("Equality 4\n");
+if((5 < 6) === TRUE ) print ("Equality 5\n");
+
+== is equality e.g. 1 == TRUE evaluates to true, TRUE == TRUE evaluates to true
+=== is identity, exactly e.g. 1 === TRUE evaluates to false, TRUE === TRUE evaluates to true
+
+===/!== same as "is" or "is not" in Python
