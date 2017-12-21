@@ -1,0 +1,35 @@
+ngrok notes
+-----------
+
+
+- ngrok is a service which can be used to provide controlled access to localhost for specific channels (e.g. allow autograder to access website hosted through localhost, instead of being blocked by firewall)
+
+steps:
+
+1. download ngrok (https://ngrok.com/download)
+2. move ngrok to some working directory (e.g desktop
+3. execute following commands to start up ngrok:
+
+	cd <directory where ngrok is>
+	ngrok http 80
+will result in output such as below:
+
+
+Session Status                online
+Version                       2.2.8
+Region                        United States (us)
+Web Interface                 http://127.0.0.1:4040
+Forwarding                    http://05715239.ngrok.io -> localhost:80
+Forwarding                    https://05715239.ngrok.io -> localhost:80
+
+Connections                   ttl     opn     rt1     rt5     p50     p90
+                              0       0       0.00    0.00    0.00    0.00
+
+note temporary url (https://05715239.ngrok.io as seen above)
+
+4. check localhost to see PHP application is running (make sure MAMP is up)
+5. construct ngrok url by replacing "http://localhost" with ngrok url
+
+e.g.
+
+http://localhost/assignment%204/ ---> https://05715239.ngrok.io/assignment%204/

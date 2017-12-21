@@ -235,3 +235,104 @@ if((5 < 6) === TRUE ) print ("Equality 5\n");
 === is identity, exactly e.g. 1 === TRUE evaluates to false, TRUE === TRUE evaluates to true
 
 ===/!== same as "is" or "is not" in Python
+
+$vv = "Hello World!";
+echo "First:" . strpos($vv, "Wo") . "\n"; --> First:6
+echo "Second: " . strpos(#vv, "He") . "\n"; --> Second: 0
+echo "Third: " . strpos($vvm "ZZ") . "\n"; --> Third:
+if (strpos($vv, "He") == FALSE ) echo "Wrong A\n"; --> Wrong A
+if (strpos($vv, "ZZ") == FALSE ) echo "Right B\n"; --> Right B
+if (strpos($vv, "He") !== FALSE ) echo "Right C\n"; --> Right C
+if (strpos($vv, "ZZ") === FALSE) echo "Right D\n"; --> Right D
+
+- FALSE variables are DETECTABLE but NOT VISIBLE
+
+PHP Control Structures
+----------------------
+
+Logical Operators
+-----------------
+
+(== != < > <= >= && || !)
+
+- curly braces used for conditionals (same as Java)
+
+e.g.
+
+<?php
+	$ans = 42;
+	if($ans == 42){
+		print "answer is 42";
+	} else {
+		print "answer is NOT 42";
+	}
+?>
+
+Whitespace doesn't matter
+------------------------
+
+see above conditional, compare to below, both are same
+
+<?php $ans = 42; if ( $ans == 42) {} print "answer is 42"; }
+else { print "answer is NOT 42";}
+?>
+
+while loop
+----------
+
+- same as Java
+
+$fuel = 10;
+while($fuel > 1){
+	print "$fuel";
+	$fuel = $fuel - 1;
+}
+
+do while loop
+-------------
+
+- same as Java, rarely used compared to while (like Java)
+
+$count = 1;
+do {
+	echo "count is... $count\n";
+} while(++$count <= 5);
+
+for loop
+--------
+
+- same as Java, control structure of PHP and Java both based on C, thus so similar
+
+for($count=1; $count<=6; $count++){
+	echo "count is.... $count\n";
+}
+echo "Done\n";
+
+--> count is.... 1 count is.... 2 count is.... 3 count is... 4
+count is.... 5 count is .....6 Done
+
+break statement
+---------------
+
+- ends current loop and jumps to statement immediately following loop
+
+for($count=1; $count<=5; $count++){
+	if($count == 5) break;
+	echo "$count\n";
+}
+echo "Done\n";
+
+--> 1 2 3 4 Done
+
+continue statement
+------------------
+
+- ends current iteration, jumps to top of loop, starts next iteration
+
+for($count=1; $count<=10; $count++){
+	if(($count % 2) == 0) continue;
+	echo "$count\n";
+}
+echo "Done\n";
+
+----> 1 3 5 7 9 Done
