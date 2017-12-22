@@ -1,0 +1,225 @@
+Week 6 PHP Arrays
+-----------------
+
+Associative Arrays
+------------------
+
+- can be key --> value pairs or simply
+indexed by numbers
+
+- 2 dimensional arrays exist...ignore for now
+
+Integer Indices
+---------------
+
+<?php
+	$stuff = array("Hi", "There");
+	echo $stuff[1],"\n";
+?>
+
+---> There
+
+- PHP arrays are 0-indexed
+
+Key/Value
+---------
+
+<?php
+	$stuff = array("name" => "Chuck",
+					"course" => "WA4E");
+	echo $stuff["course"],"\n";
+?>
+
+---> WA4E
+
+- Key Value pair arrays in PHP are essentially same as a hashmap in java
+
+Dumping an Array
+---------------
+
+- print_r() function shows PHP data - good for debugging
+
+<?php
+	$stuff = array("name" => "Chuck",
+					"course" => "WA4E");
+	echo("<pre>\n");
+	print_r($stuff);
+	echo("\n</pre>\n");
+?>
+
+--->	Array(
+			[name] => Chuck
+			[course] => WA4E
+		)
+ 
+- var_dump prints array similarly to print_r,
+not pretty printed, more verbose
+
+<?php
+	$stuff = array("name" => "Chuck",
+					"course" => "WA4E");
+	var_dump($stuff);
+?>
+
+---> 	array(2) {
+			["name"]=>
+			string(5) "Chuck"
+			["course"]=>
+			string(5) "WA4E"
+		}
+
+- var_dump CAN print FALSE
+
+var_dump(FALSE) ---> bool(false)
+
+Looping thrugh an array
+-----------------------
+
+Key/Value Loop:
+
+<?php
+	$stuff = array("name" => "Chuck"
+					"course => "WA4E");
+	foreach($stuff as $k => $v ){
+		echo "Key=",$k," Val=",$v,"\n";
+	}
+?>
+
+- syntax is as follows:
+
+foreach(ARRAY_NAME as KEY_ITR => VALUE_ITR)
+
+Counted Loop:
+
+<?php
+	$stuff = array("name" => "Chuck"
+					"course => "WA4E");
+	for($i=0;$i<count($stuff);$i++){
+		echo "I=",$i," Val=",$stuff[$i],"\n";
+	}
+?>
+
+- syntax is as follows:
+
+for(ITR=0;ITR<count(ARRAY_NAME);ITR++)
+
+Array of Arrays (2D Arrays)
+---------------------------
+
+- the elements of an array can be many things other than string/integer, can have objects or arrays as elements of an array
+
+e.g.
+
+$products = array(
+	'paper' => array(
+		'copier' => "Copier & Multipurpose",
+		'inkjet' => "Inkjet Printer",
+		'laser' => "Laser Printer",
+		'photo' => "Photo Paper"),
+	'pen' => array(
+		'ball' => "Ball Point",
+		'hilite' => "Highlighter",
+		'marker' => "Marker"
+	)
+);
+
+- not often constructed unless getting data from source in this format already (e.g. JSON)
+
+PHP Array Function
+------------------
+
+- variety of built-in PHP functions which can be passed arrays or keys/values to execute some kind of functionality
+
+e.g.
+
+array_key_exists($key,$ar) - returns TRUE
+if key is set in array
+
+isset($ar[$key]) - returns TRUE if key is set in array
+
+count($ar) - returns number of elements in array
+
+is_array($ar) - returns TRUE if variable is an array
+
+sort($ar) - sorts the array values (loses key)
+
+ksort($ar) - sorts array by key
+
+asort($ar) - sorts array by value, keeping key association
+
+shuffle($ar) - shuffles array into random order
+
+
+$za = array();
+$za["name"] = "Chuck";
+$za["course"] = "WA4E";
+
+if(array_key_exists('course',$za)){
+	echo("Course exists\n");
+} else {
+	echo("Course does not exist\n");
+}
+
+- can use ternary operator to simplify above 
+
+echo(isset($za['name']) ? "name is set\n" : "name is not set\n");
+
+- above process is rather complex, in PHP7 and onwards you can use null coalescing operator (??) instead
+
+e.g.
+
+<?php
+	$username = $_GET['user'] ?? 'nobody';
+?>
+
+above is same as....
+
+<?php
+	$username = isset($_GET['user']) ? $_GET['user'] : 'nobody';
+?>
+
+Exploding Arrays
+----------------
+
+- similar to SPLIT() in java, creates array
+from string based on splitting delimiter
+
+e.g.
+
+$inp = "This is a sentence with seven words";
+$temp = explode(' ', $inp);
+print_r($temp);
+
+---> Array(
+		[0] => This
+		[1] => is
+		[2] => a
+		[3] => sentence
+		[4] => with
+		[5] => seven
+		[6] => words
+	)
+
+HTTP and PHP Arrays
+-------------------
+
+connecting request/respone cycle with arrays
+--------------------------------------------
+
+process:
+
+1. user of client clicks link
+2. broswer sends request to web server
+with HTTP
+3. Apache web server retrieves request,
+starts up PHP code on web server, if parameters exist as part of link, parameters
+automatically put in global array called
+$_GET[]
+
+e.g. parameter x=2 in link can be
+accessed using $_GET['x']
+
+4. write code, send back HTML to DOM, see new page
+
+- $_GET array is called SUPER GLOBAL array, because it can be accessed ANYWHERE by PHP
+

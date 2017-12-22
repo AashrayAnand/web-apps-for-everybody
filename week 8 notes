@@ -86,4 +86,161 @@ HTML Input Types
 
 - textarea form field, takes "rows" and "cols" fields and is a text box which is submitted as string to server
 
-- 
+- SELECT multiple="multiple" tag, allows for select tag where multiple options can be selected by user
+
+NEW HTML Input Types
+--------------------
+
+- input type="color"
+- input type="date"
+- input type="email"
+- input type="number" adds range and arrow to go up/down for number value
+- input type="url" 
+
+Processing form data and HTML Injection
+---------------------------------------
+
+Persisting form data
+--------------------
+
+- when we submit forms and there is an error, we just expect data will remain in form when page is redisplayed
+- application needs to make sure to put previous values back in form
+
+<?php
+	$oldguess = isset($_POST['guess']) ? $_POST['guess'] : '';
+?>
+
+<p>Guessing game...</p>
+<form method="post">
+	<p><label for="guess">Input Guess</label>
+	<input type="text" name="guess" id="guess"
+		size="40" value"<?= $oldguess ?>"/></p>
+	<input type="submit"/>
+</form>
+
+in above code, when form is submitted and error occurs, php code at top will save old guess from form if a guess was submitted, and then this value $oldguess is "echoed" into HTML using shorthand
+
+<?= $oldguess ?> -----> <?php echo($oldguess); ?>
+
+- HOWEVER, above code is a prime example of a form which can be subject to an HTML Injection
+
+e.g.
+
+if guess submitted by user is following HTML:
+
+"><b>DIE DIE DIE</b>
+
+"> will terminate form field, and rest of HTML will appear on the actual page
+
+- this is a trivial example of HTML injection, normally used to execute dangerous code (e.g. stealing CC info, hacking or damaging page/resources etc.)
+
+- browser won't know what HTML came from form field and what came from code, will then interpret it incorrectly as a result
+
+To The Rescue: htmlentities()
+-----------------------------
+
+<? htmlentities($oldguess) ?>
+
+- &lt &amp etc. are html entities
+- when parsing form field using htmlentities(), converts all characters which can be represented as htmlentities and prints them as such
+
+"><b>DIE DIE DIE</b> ---> "&quot;%gt;%lt;b&gt;DIE DIE DIE&lt;/b&gt;"
+
+Guessing Game - In-server Data Validation
+-----------------------------------------
+
+- after data has successfully been sent from form to web server through HTTP request, need to make sure data being sent by user was "safe" to be accessed/processed
+
+Incoming Data Validation
+------------------------
+
+- making sure all user data is present and correct format before proceeding
+	- non-empty strlen($var) > 0
+	- a number is_numeric($var)
+	- an email address strpos($var,'@') > 0
+	- or filter_var($var, FILTER_VALIDATE_EMAIL) != false
+		(see filter_var in PHP docs)
+
+Model View Controller (MVC)
+---------------------------
+
+- programming pattern which breaks request/response cycle into three separate operations
+
+basic MVC definition
+--------------------
+
+- a model that defines elements of a web application and how they interact
+
+- View: produces output
+- Model: handles data
+- Controller: orchestration/routing
+
+	-[MODEL]<---manipulates--[controller]
+	|							    / \
+   updates				 		     |
+   	|							    uses
+   	|					 		     |
+  	----->[VIEW]<--sees--->[USER]----|
+
+Pattern: Processing POST data
+-----------------------------
+
+- many patterns for handling POST data
+- no "rules", just suggestions
+- "frameworks" are just different interpretations of MVC
+
+one option:
+
+1. completely process incoming data (if any) - produce no output (model)
+2. produce page output (view)
+
+example below
+
+<?php
+	$oldguess = '';
+	$message = false;
+	if(isset($_POST['guess'])){
+		$oldguess = $_POST['guess'] + 0;
+		if( $oldguess == 42){
+			$message = "correct";
+		} else if( $oldguess > 42 ){
+			$message = "too high";
+		} else {
+			$message = "too low";
+		}
+	}
+?>
+
+above is MODEL
+
+<html>
+<head>
+	<title>A guessing game</title>
+</head>
+<body style="font-family: sans-serif;">
+<p>guessing game....</p>
+<?php
+	if($message !== false){
+		echo("<p>$message</p>\n");
+	}
+?>
+<form method="post">
+	<p><label for="guess">Input Guess</label>
+	<input type="text" name="guess" id="guess" size="40"
+		value="<?"= htmlentities($oldguess) ?>"/></p>
+	<input type="submit" />
+</form>
+</body>
+
+above is VIEW
+
+both parts together form CONTROLLER
+
+simple rules:
+
+- no HTML created in model
+- no Database interaction in view
+
+- above are not required, but are good convention
+
+$_REQUEST array merges data from $_GET and $_POST
